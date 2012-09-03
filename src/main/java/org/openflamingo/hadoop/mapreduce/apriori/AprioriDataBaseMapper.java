@@ -23,8 +23,7 @@ public class AprioriDataBaseMapper extends Mapper<LongWritable, Text, Text, Text
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
         Configuration configuration = context.getConfiguration();
-//        delimiter = configuration.get("delimiter");
-        delimiter = ",";
+        delimiter = configuration.get("delimiter");
         level = configuration.getInt("level", 0);
     }
 
@@ -34,7 +33,6 @@ public class AprioriDataBaseMapper extends Mapper<LongWritable, Text, Text, Text
 
         String resultKey = createKey(stringTokenizer);
         String resultValue = createValue(stringTokenizer);
-
 
         context.write(new Text(resultKey), new Text(resultValue));
     }

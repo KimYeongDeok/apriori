@@ -27,8 +27,7 @@ public class AprioriSortMapper extends Mapper<LongWritable, Text, NullWritable, 
     @Override
    	protected void setup(Context context) throws IOException, InterruptedException {
    		Configuration configuration = context.getConfiguration();
-//        delimiter = configuration.get("delimiter");
-        delimiter = ",";
+        delimiter = configuration.get("delimiter");
    	}
     @Override
    	protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
