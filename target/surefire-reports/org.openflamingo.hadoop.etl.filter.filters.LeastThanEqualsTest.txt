@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.openflamingo.hadoop.etl.filter.filters.LeastThanEqualsTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 sec
