@@ -31,7 +31,7 @@ public class CommandInspector {
 		options.addOption("output", true, "출력 경로 (필수)");
 		options.addOption("delimiter", true, "컬럼 구분자 (필수)");
 		options.addOption("command", true, "-command name");
-		options.addOption("parameter", true, "-parameter 입력값");
+		options.addOption("level", true, "-level 입력값");
 		return options;
 	}
 

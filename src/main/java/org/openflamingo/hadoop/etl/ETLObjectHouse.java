@@ -1,15 +1,6 @@
 package org.openflamingo.hadoop.etl;
 
-import org.openflamingo.hadoop.etl.filter.filters.*;
-import org.openflamingo.hadoop.mapreduce.aggregate.AggregateDriver;
 import org.openflamingo.hadoop.mapreduce.apriori.AprioriDriver;
-import org.openflamingo.hadoop.mapreduce.clean.CleanDriver;
-import org.openflamingo.hadoop.mapreduce.filter.FilterDriver;
-import org.openflamingo.hadoop.mapreduce.generate.GenerateDriver;
-import org.openflamingo.hadoop.mapreduce.grep.GrepDriver;
-import org.openflamingo.hadoop.mapreduce.group.GroupDriver;
-import org.openflamingo.hadoop.mapreduce.rank.RankDriver;
-import org.openflamingo.hadoop.mapreduce.replace.ReplaceDriver;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,26 +20,7 @@ public class ETLObjectHouse {
 	 * 객체 생성
 	 */
 	static {
-		objectMap.put("aggregate", new AggregateDriver());
-		objectMap.put("clean", new CleanDriver());
-		objectMap.put("filter", new FilterDriver());
-		objectMap.put("grep", new GrepDriver());
-		objectMap.put("replace", new ReplaceDriver());
-		objectMap.put("generate", new GenerateDriver());
-		objectMap.put("rank", new RankDriver());
-		objectMap.put("group", new GroupDriver());
         objectMap.put("apriori", new AprioriDriver());
-
-		objectMap.put("EQ", new Equals());
-		objectMap.put("NEQ", new NotEquals());
-		objectMap.put("EMPTY", new Empty());
-		objectMap.put("NEMPTY", new NotEmpty());
-		objectMap.put("STARTWITH", new StartWith());
-		objectMap.put("ENDWITH", new EndWith());
-		objectMap.put("GT", new GreaterThan());
-		objectMap.put("GTE", new GreaterThanEquals());
-		objectMap.put("LT", new LeastThan());
-		objectMap.put("LTE", new LeastThanEquals());
 	}
 
 

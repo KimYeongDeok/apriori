@@ -23,11 +23,11 @@ import java.io.IOException;
 public class AprioriDriver implements ETLDriver {
     @Override
     public int service(Job job, CommandLine cmd, Configuration conf) throws Exception {
-        int level = 2;
         long count =  sortAndCountMapper(job, cmd);
         if (count == 0)
             return (int) count;
 
+        int level = Integer.valueOf(cmd.getOptionValue("level", "0"));
         for (int i = 1; i <= level; i++) {
             conf.setInt("level", i);
             String output = cmd.getOptionValue("output") + i;
