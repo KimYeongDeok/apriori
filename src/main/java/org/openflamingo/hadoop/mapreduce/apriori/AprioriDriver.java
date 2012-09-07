@@ -28,12 +28,18 @@ public class AprioriDriver implements ETLDriver {
             return (int) count;
 
         int level = Integer.valueOf(cmd.getOptionValue("level", "0"));
+        String input = cmd.getOptionValue("input");
         for (int i = 1; i <= level; i++) {
             conf.setInt("level", i);
-            String output = cmd.getOptionValue("output") + i;
-            ProcessJob processJob = new ProcessJob(cmd, conf, output).invoke(AprioriDataBaseMapper.class);
-        }
+            conf.setInt("support", 1);
 
+            String output = cmd.getOptionValue("output") + i;
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++");
+            System.out.println(input);
+            ProcessJob processJob = new ProcessJob(cmd, conf, input, output);
+            processJob.invoke(AprioriDataBaseMapper.class, AprioriDataBaseReduce.class);
+            input = output;
+        }
         return 1;
     }
 

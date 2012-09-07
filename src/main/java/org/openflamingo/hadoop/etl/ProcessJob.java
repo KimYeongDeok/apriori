@@ -78,20 +78,23 @@ public class ProcessJob {
 	 * @throws InterruptedException
 	 * @throws ClassNotFoundException
 	 */
-	public ProcessJob invoke(Class maapperClass) throws IOException, InterruptedException, ClassNotFoundException {
+	public ProcessJob invoke(Class maapperClass, Class reduceClass) throws IOException, InterruptedException, ClassNotFoundException {
 		this.mapperClass = maapperClass;
 		job = new Job(conf);
 		job.setJarByClass(FrontDriver.class);
 
         FileInputFormat.addInputPaths(job, input);
-        FileOutputFormat.setOutputPath(job, new Path(output+"ca"));
+        FileOutputFormat.setOutputPath(job, new Path(output));
 
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
 		job.setMapOutputKeyClass(Text.class);
 		job.setMapOutputValueClass(Text.class);
+
 		job.setMapperClass(maapperClass);
-		job.setNumReduceTasks(0);
+        job.setReducerClass(reduceClass);
+
+		job.setNumReduceTasks(1);
         job.getConfiguration().set("delimiter",cmd.getOptionValue("delimiter"));
 		job.waitForCompletion(true);
 		boolean success = job.waitForCompletion(true);

@@ -13,6 +13,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:13.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-core:1.0.3" level="project" />
     <orderEntry type="library" name="Maven: commons-cli:commons-cli:1.2" level="project" />
     <orderEntry type="library" name="Maven: xmlenc:xmlenc:0.52" level="project" />
