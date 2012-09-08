@@ -18,8 +18,8 @@ import java.util.StringTokenizer;
  * @author Youngdeok Kim
  * @since 1.0
  */
-public class AprioriDataBaseMapper extends Mapper<LongWritable, Text, Text, Text> {
-    private static final Log LOG = LogFactory.getLog(AprioriDataBaseMapper.class);
+public class AprioriMapper extends Mapper<LongWritable, Text, Text, Text> {
+    private static final Log LOG = LogFactory.getLog(AprioriMapper.class);
     private String delimiter;
     private int level;
 
