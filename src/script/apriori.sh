@@ -10,7 +10,4 @@ LEVEL="2"
 
 ssh $UCLOUD hadoop fs -rmr $OUTPUT*
 ssh $UCLOUD hadoop jar /root/youngdeok/hadoop-example.jar org.openflamingo.hadoop.mapreduce.$MAPREDUCE -input $INPUT -output $OUTPUT -delimiter $DELIMITER -command $COMMAND -level $LEVEL
-ssh $UCLOUD hadoop fs -cat $OUTPUT/part-*
-ssh $UCLOUD hadoop fs -cat $OUTPUT1/part-*
-ssh $UCLOUD hadoop fs -cat $OUTPUT2/part-*
-ssh $UCLOUD hadoop fs -cat $OUTPUT3/part-*
+ssh $UCLOUD hadoop fs -cat $OUTPUT*/part*

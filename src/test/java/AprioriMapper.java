@@ -11,8 +11,8 @@ import java.util.StringTokenizer;
  * @since 1.0
  */
 public class AprioriMapper {
-    String value = "a,b,c,e,r";
-    int level = 1;
+    String value = "a,b c,e,r";
+    int level = 2;
     String delimiter = ",";
     String key = "a";
 
@@ -32,9 +32,10 @@ public class AprioriMapper {
             secondRow = tempRow.substring(indexSpace+1, tempRow.length());
         }
         if (indexSpace > 0 && length <= 1) {
-            firstRow = tempRow.substring(0, indexSpace);
-            secondRow = tempRow.substring(indexSpace+1, tempRow.length());
+
         }
+        firstRow = tempRow.substring(0, indexSpace);
+        secondRow = tempRow.substring(indexSpace+1, tempRow.length());
 
         StringTokenizer stringTokenizer = new StringTokenizer(secondRow, delimiter);
         List<String> stringValues = toList(stringTokenizer);

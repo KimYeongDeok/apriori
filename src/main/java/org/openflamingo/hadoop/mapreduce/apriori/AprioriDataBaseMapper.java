@@ -40,7 +40,7 @@ public class AprioriDataBaseMapper extends Mapper<LongWritable, Text, Text, Text
         String firstRow = null;
         String secondRow = null;
 
-        if (indexSpace <= 0 || length <= 1) {
+        if (indexSpace < 0 || length <= 1) {
             indexSpace = 1;
             firstRow = tempRow.substring(0, indexSpace);
             secondRow = tempRow.substring(indexSpace + 1, tempRow.length());
@@ -49,6 +49,11 @@ public class AprioriDataBaseMapper extends Mapper<LongWritable, Text, Text, Text
             firstRow = tempRow.substring(0, indexSpace);
             secondRow = tempRow.substring(indexSpace + 1, tempRow.length());
         }
+
+        LOG.info("+++++++++++++++++++++++");
+        LOG.info(tempRow);
+        LOG.info(firstRow+"    "+secondRow);
+        LOG.info(indexSpace+"     "+indexDelimeter);
 
         StringTokenizer stringTokenizer = new StringTokenizer(secondRow, delimiter);
         List<String> stringValues = toList(stringTokenizer);

@@ -1,5 +1,13 @@
-import org.junit.Test;
+package org.openflamingo.hadoop.mapreduce.apriori;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -10,25 +18,27 @@ import java.util.StringTokenizer;
  * @author Youngdeok Kim
  * @since 1.0
  */
-public class FisrtMapper {
-    String value = "a,b,c";
-    int level = 1;
-    String delimiter = ",";
-    String key = "a";
+public class AprioriFirstMapper extends Mapper<LongWritable, Text, Text, Text> {
+    private static final Log LOG = LogFactory.getLog(AprioriFirstMapper.class);
+    private String delimiter;
 
-    @Test
-    public void start() {
-        StringTokenizer stringTokenizer = new StringTokenizer(value, delimiter);
+    @Override
+    protected void setup(Context context) throws IOException, InterruptedException {
+        Configuration configuration = context.getConfiguration();
+        delimiter = configuration.get("delimiter");
+    }
+
+    @Override
+    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+        StringTokenizer stringTokenizer = new StringTokenizer(value.toString(), delimiter);
         List<String> stringValues = toList(stringTokenizer);
-
-//        String rowKey = createKey(stringValues);
 
         while (1 != stringValues.size()) {
             String rowKey = createKey(stringValues);
             String rowValue = createValue(stringValues);
-            System.out.println(rowKey + "    " + rowValue);
+            context.write(new Text(rowKey), new Text(rowValue));
         }
-        System.out.println(stringValues.get(0) + "    " + "NULL");
+        context.write(new Text(stringValues.get(0)), new Text("NULL"));
     }
 
     private String createKey(List<String> stringValues) {
@@ -62,3 +72,4 @@ public class FisrtMapper {
         return list;
     }
 }
+
