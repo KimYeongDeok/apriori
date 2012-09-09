@@ -28,35 +28,32 @@ public class AprioriDriver implements ETLDriver {
             return (int) count;
 
         int level = Integer.valueOf(cmd.getOptionValue("level", "0"));
-        conf.setInt("support", 1);
+        conf.setInt("support", 2);
 
-        firstAprioriMapper(cmd, conf);
+        firstAprioriMapReduce(cmd, conf);
+        othersAprioriMapReduece(cmd, conf, level);
 
-//        String input = cmd.getOptionValue("output")+"1/part*";
-//        for (int i = 2; i <= level; i++) {
-//            conf.setInt("level", i);
-//            System.out.println("++++++++++++++++++++++++++++++++++++++++++");
-//            System.out.println(input);
-//            System.out.println("++++++++++++++++++++++++++++++++++++++++++");
-//
-//            String output = cmd.getOptionValue("output") + i;
-//
-//            ProcessJob processJob = new ProcessJob(cmd, conf, input, output);
-//            processJob.invoke(AprioriDataBaseMapper.class, AprioriDataBaseReduce.class);
-//
-//            input = output + "/part*";
-//            System.out.println("++++++++++++++++++++++++++++++++++++++++++");
-//            System.out.println(input);
-//            System.out.println("++++++++++++++++++++++++++++++++++++++++++");
-//        }
         return 1;
     }
 
-    private void firstAprioriMapper(CommandLine cmd, Configuration conf) throws IOException, InterruptedException, ClassNotFoundException {
+    private void othersAprioriMapReduece(CommandLine cmd, Configuration conf, int level) throws IOException, InterruptedException, ClassNotFoundException {
+        String input = cmd.getOptionValue("output")+"1/part*";
+        for (int i = 2; i <= level; i++) {
+            conf.setInt("level", i);
+            String output = cmd.getOptionValue("output") + i;
+
+            ProcessJob processJob = new ProcessJob(cmd, conf, input, output);
+            processJob.invoke(AprioriMapper.class, AprioriReduce.class);
+
+            input = output + "/part*";
+        }
+    }
+
+    private void firstAprioriMapReduce(CommandLine cmd, Configuration conf) throws IOException, InterruptedException, ClassNotFoundException {
         String input = cmd.getOptionValue("output");
         String output = input + "1";
         ProcessJob firstMapperJob = new ProcessJob(cmd, conf, input, output);
-        firstMapperJob.invoke(AprioriFirstMapper.class, AprioriDataBaseReduce.class);
+        firstMapperJob.invoke(AprioriFirstMapper.class, AprioriReduce.class);
     }
 
     private long sortAndCountMapper(Job job, CommandLine cmd) throws IOException, InterruptedException, ClassNotFoundException {

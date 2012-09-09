@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
  * @since 1.0
  */
 public class AprioriMapper {
-    String value = "a,b c,e,r";
+    String value = "3\t4,5";
     int level = 2;
     String delimiter = ",";
     String key = "a";
@@ -19,42 +19,22 @@ public class AprioriMapper {
     @Test
     public void start() {
         String tempRow = value;
-        int indexSpace = tempRow.indexOf(" ");
-        int indexDelimeter = tempRow.indexOf(delimiter);
-        int length = Math.abs(indexSpace - indexDelimeter);
+        int indexSpace = tempRow.indexOf("\t");
 
-        String firstRow = null;
-        String secondRow = null;
-
-        if (indexSpace < 0 && length >= 1) {
-            indexSpace = 1;
-            firstRow = tempRow.substring(0, indexSpace);
-            secondRow = tempRow.substring(indexSpace+1, tempRow.length());
-        }
-        if (indexSpace > 0 && length <= 1) {
-
-        }
-        firstRow = tempRow.substring(0, indexSpace);
-        secondRow = tempRow.substring(indexSpace+1, tempRow.length());
+        String firstRow = tempRow.substring(0, indexSpace);
+        String secondRow = tempRow.substring(indexSpace+1, tempRow.length());
 
         StringTokenizer stringTokenizer = new StringTokenizer(secondRow, delimiter);
         List<String> stringValues = toList(stringTokenizer);
         int valueSize = stringValues.size();
 
-        if (level > valueSize)
-            return;
-
-        for (int i = 0; i < valueSize; i++) {
-            if (1 >= stringValues.size()) {
-                String rowKey = createKey(firstRow, stringValues);
-                System.out.println(rowKey + "    " + "NULL");
-                return;
-            }
-
+        while (1 != stringValues.size()) {
             String rowKey = createKey(firstRow, stringValues);
             String rowValue = createValue(stringValues);
             System.out.println(rowKey + "    " + rowValue);
         }
+        String rowKey = createKey(firstRow, stringValues);
+        System.out.println(rowKey + "    " + "NULL");
     }
 
 

@@ -39,8 +39,7 @@ public class AprioriReduce extends Reducer<Text, Text, Text, Text> {
 
         if (size < support)
             return;
-
-        context.write(key, new Text(size + ""));
+        context.write(key, new Text("size "+size));
         for (String text : list) {
             if("NULL".equals(text))
                 continue;

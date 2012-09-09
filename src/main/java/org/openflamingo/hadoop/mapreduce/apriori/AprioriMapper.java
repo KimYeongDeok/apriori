@@ -33,52 +33,29 @@ public class AprioriMapper extends Mapper<LongWritable, Text, Text, Text> {
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         String tempRow = value.toString();
-        int indexSpace = tempRow.indexOf(" ");
-        int indexDelimeter = tempRow.indexOf(delimiter);
-        int length = Math.abs(indexSpace - indexDelimeter);
+        int indexSpace = tempRow.indexOf("\t");
 
-        String firstRow = null;
-        String secondRow = null;
-
-        if (indexSpace < 0 || length <= 1) {
-            indexSpace = 1;
-            firstRow = tempRow.substring(0, indexSpace);
-            secondRow = tempRow.substring(indexSpace + 1, tempRow.length());
-        }
-        if (indexSpace >= 0 || length >= 1) {
-            firstRow = tempRow.substring(0, indexSpace);
-            secondRow = tempRow.substring(indexSpace + 1, tempRow.length());
-        }
-
-        LOG.info("+++++++++++++++++++++++");
-        LOG.info(tempRow);
-        LOG.info(firstRow+"    "+secondRow);
-        LOG.info(indexSpace+"     "+indexDelimeter);
+        String firstRow = tempRow.substring(0, indexSpace);
+        String secondRow = tempRow.substring(indexSpace+1, tempRow.length());
 
         StringTokenizer stringTokenizer = new StringTokenizer(secondRow, delimiter);
         List<String> stringValues = toList(stringTokenizer);
         int valueSize = stringValues.size();
 
-        if (level > valueSize)
-            return;
-
-        for (int i = 0; i < valueSize; i++) {
-            if (1 >= stringValues.size()) {
-                String rowKey = createKey(firstRow, stringValues);
-                context.write(new Text(rowKey), new Text("NULL"));
-                return;
-            }
-
+        while (1 != stringValues.size()) {
             String rowKey = createKey(firstRow, stringValues);
             String rowValue = createValue(stringValues);
             context.write(new Text(rowKey), new Text(rowValue));
         }
+        String rowKey = createKey(firstRow, stringValues);
+        context.write(new Text(rowKey), new Text("NULL"));
     }
 
 
     private String createKey(String key, List<String> stringValues) {
         key = key + delimiter + stringValues.get(0);
         stringValues.remove(0);
+
         return key;
     }
 
