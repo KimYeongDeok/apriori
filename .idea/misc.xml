@@ -6,7 +6,7 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
-  <component name="IdProvider" IDEtalkID="1838B55FACB882A867368D9B674DE949" />
+  <component name="IdProvider" IDEtalkID="2F4EBE0C4FB6013F69E345099FB0313F" />
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
@@ -152,5 +152,21 @@
     </configuration>
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.6</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.20000002" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
 </project>
 
