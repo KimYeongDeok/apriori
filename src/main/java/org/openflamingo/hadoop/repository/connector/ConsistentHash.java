@@ -1,4 +1,4 @@
-package org.openflamingo.hadoop.repository;
+package org.openflamingo.hadoop.repository.connector;
 
 import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
@@ -48,7 +48,6 @@ public class ConsistentHash<T> {
         }
         HashCode hashCode = hashFunction.hashString(key.toString());
         Integer hash = hashCode.hashCode();
-        System.out.println(circle.get(hash));
         if (!circle.containsKey(hash)) {
             SortedMap<Integer, T> tailMap = circle.tailMap(hash);
             hash = tailMap.isEmpty() ?

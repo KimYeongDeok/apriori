@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.openflamingo.hadoop.repository.AprioriRepositoryMySQL;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -20,11 +21,12 @@ import java.util.Set;
 public class AprioriReduce extends Reducer<Text, Text, Text, Text> {
     private static final Log LOG = LogFactory.getLog(AprioriReduce.class);
     private int support;
-
+    private AprioriRepositoryMySQL repository;
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
         Configuration configuration = context.getConfiguration();
         support = configuration.getInt("support", 0);
+        repository = new AprioriRepositoryMySQL();
     }
 
     @Override
@@ -39,11 +41,29 @@ public class AprioriReduce extends Reducer<Text, Text, Text, Text> {
 
         if (size < support)
             return;
-        context.write(key, new Text("size "+size));
+
+        saveSupport(key.toString(), size);
         for (String text : list) {
             if("NULL".equals(text))
                 continue;
             context.write(key, new Text(text));
+            saveCandidate(key, text);
+        }
+    }
+
+    private void saveCandidate(Text key, String text) {
+        try {
+            repository.saveCadidate(key.toString(), text);
+        } catch (Exception e) {
+            LOG.error(e);
+        }
+    }
+
+    private void saveSupport(String key, int size) {
+        try {
+            repository.saveSupport(key, size);
+        } catch (Exception e) {
+            LOG.error(e);
         }
     }
 }
