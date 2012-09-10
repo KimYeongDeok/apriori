@@ -54,7 +54,7 @@ public class AprioriRepositoryMySQL implements AprioriRepository{
         insert.executeUpdate(model);
     }
 
-    public void saveTotalSize(int size) throws Exception {
+    public void saveTotalSize(long size) throws Exception {
         MySQLConnector connector = consistentHash.get("0");
 
         SqlInsertTotalSize insert = new SqlInsertTotalSize(connector);

@@ -1,10 +1,13 @@
 package org.openflamingo.hadoop.mapreduce.apriori;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.openflamingo.hadoop.repository.AprioriRepositoryMySQL;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +22,10 @@ import java.util.StringTokenizer;
  * @since 1.0
  */
 public class AprioriSortMapper extends Mapper<LongWritable, Text, NullWritable, Text> {
+    private static final Log LOG = LogFactory.getLog(AprioriSortMapper.class);
     private String delimiter;
+    private AprioriRepositoryMySQL repository;
+
     public static enum COUNTER{
    		TOTAL_COUNT
    	}
@@ -28,6 +34,7 @@ public class AprioriSortMapper extends Mapper<LongWritable, Text, NullWritable, 
    	protected void setup(Context context) throws IOException, InterruptedException {
    		Configuration configuration = context.getConfiguration();
         delimiter = configuration.get("delimiter");
+        repository = new AprioriRepositoryMySQL();
    	}
     @Override
    	protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {

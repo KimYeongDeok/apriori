@@ -39,20 +39,18 @@ public class SqlInsertTotalSize extends JdbcTemplate {
             select = conn.prepareStatement(SQL.SELECT_TBL_TOTALSIZE);
             rs = select.executeQuery();
 
-            int size = 0;
-
-
+            long size = 0;
             if (rs.first()) {
-                size = rs.getInt(1);
+                size = rs.getLong(1);
             } else {
                 insert = conn.prepareStatement(SQL.INSERT_TBL_TOTALSIZE);
                 insert.executeUpdate();
             }
 
-            int totalSize = size + (Integer) param;
+            long totalSize = size + (Long) param;
 
             udpate = conn.prepareStatement(SQL.UPDATE_TBL_TOTALSIZE);
-            udpate.setInt(1, totalSize);
+            udpate.setLong(1, totalSize);
             udpate.executeUpdate();
         } finally {
             try {

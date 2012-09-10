@@ -1,6 +1,8 @@
 package org.openflamingo.hadoop.mapreduce.apriori;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -11,6 +13,7 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.openflamingo.hadoop.etl.ProcessJob;
 import org.openflamingo.hadoop.mapreduce.ETLDriver;
+import org.openflamingo.hadoop.repository.AprioriRepositoryMySQL;
 
 import java.io.IOException;
 
@@ -21,11 +24,14 @@ import java.io.IOException;
  * @since 1.0
  */
 public class AprioriDriver implements ETLDriver {
+    private static final Log LOG = LogFactory.getLog(AprioriFirstMapper.class);
     @Override
     public int service(Job job, CommandLine cmd, Configuration conf) throws Exception {
         long count = sortAndCountMapper(job, cmd);
         if (count == 0)
             return (int) count;
+        saveTotalSize(count);
+
         int level = Integer.valueOf(cmd.getOptionValue("level", "0"));
         conf.setInt("support", 2);
 
@@ -33,6 +39,16 @@ public class AprioriDriver implements ETLDriver {
         othersAprioriMapReduece(cmd, conf, level);
 
         return 1;
+    }
+
+
+    private void saveTotalSize(long valueSize) {
+        AprioriRepositoryMySQL repository = new AprioriRepositoryMySQL();
+        try {
+            repository.saveTotalSize(valueSize);
+        } catch (Exception e) {
+            LOG.error(e);
+        }
     }
 
     private void othersAprioriMapReduece(CommandLine cmd, Configuration conf, int level) throws IOException, InterruptedException, ClassNotFoundException {

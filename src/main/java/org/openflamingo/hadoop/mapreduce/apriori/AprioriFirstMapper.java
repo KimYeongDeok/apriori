@@ -6,7 +6,6 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.openflamingo.hadoop.repository.AprioriRepositoryMySQL;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,13 +21,11 @@ import java.util.StringTokenizer;
 public class AprioriFirstMapper extends Mapper<LongWritable, Text, Text, Text> {
     private static final Log LOG = LogFactory.getLog(AprioriFirstMapper.class);
     private String delimiter;
-    private AprioriRepositoryMySQL repository;
 
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
         Configuration configuration = context.getConfiguration();
         delimiter = configuration.get("delimiter");
-        repository = new AprioriRepositoryMySQL();
     }
 
     @Override
@@ -44,15 +41,6 @@ public class AprioriFirstMapper extends Mapper<LongWritable, Text, Text, Text> {
             context.write(new Text(rowKey), new Text(rowValue));
         }
         context.write(new Text(stringValues.get(0)), new Text("NULL"));
-        saveTotalSize(size);
-    }
-
-    private void saveTotalSize(int valueSize) {
-        try {
-            repository.saveTotalSize(valueSize);
-        } catch (Exception e) {
-            LOG.error(e);
-        }
     }
 
     private String createKey(List<String> stringValues) {
