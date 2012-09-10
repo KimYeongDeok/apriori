@@ -25,12 +25,14 @@ import java.io.IOException;
  */
 public class AprioriDriver implements ETLDriver {
     private static final Log LOG = LogFactory.getLog(AprioriFirstMapper.class);
+
     @Override
     public int service(Job job, CommandLine cmd, Configuration conf) throws Exception {
         long count = sortAndCountMapper(job, cmd);
         if (count == 0)
             return (int) count;
-        saveTotalSize(count);
+
+//       saveTotalSize(count);
 
         int level = Integer.valueOf(cmd.getOptionValue("level", "0"));
         conf.setInt("support", 2);
@@ -52,7 +54,7 @@ public class AprioriDriver implements ETLDriver {
     }
 
     private void othersAprioriMapReduece(CommandLine cmd, Configuration conf, int level) throws IOException, InterruptedException, ClassNotFoundException {
-        String input = cmd.getOptionValue("output")+"1/part*";
+        String input = cmd.getOptionValue("output") + "1/part*";
         for (int i = 2; i <= level; i++) {
             conf.setInt("level", i);
             String output = cmd.getOptionValue("output") + i;
