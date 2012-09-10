@@ -29,22 +29,57 @@ public class SqlInsertTotalSize extends JdbcTemplate {
 
     @Override
     protected Object executeService(Connection conn, Object param) throws SQLException {
-        conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
-        PreparedStatement select = conn.prepareStatement(SQL.SELECT_TBL_TOTALSIZE);
-        ResultSet rs = select.executeQuery();
+        PreparedStatement select = null;
+        PreparedStatement udpate = null;
+        ResultSet rs = null;
+        PreparedStatement insert = null;
+        try {
+            conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 
-        int size=0;
+            select = conn.prepareStatement(SQL.SELECT_TBL_TOTALSIZE);
+            rs = select.executeQuery();
 
-        if(!rs.wasNull()){
-            rs.first();
-            size = rs.getInt(1);
+            int size = 0;
+
+
+            if (rs.first()) {
+                size = rs.getInt(1);
+            } else {
+                insert = conn.prepareStatement(SQL.INSERT_TBL_TOTALSIZE);
+                insert.executeUpdate();
+            }
+
+            int totalSize = size + (Integer) param;
+
+            udpate = conn.prepareStatement(SQL.UPDATE_TBL_TOTALSIZE);
+            udpate.setInt(1, totalSize);
+            udpate.executeUpdate();
+        } finally {
+            try {
+                if (select != null) {
+                    select.close();
+                }
+            } catch (Exception e2) {
+            }
+            try {
+                if (insert != null) {
+                    insert.close();
+                }
+            } catch (Exception e2) {
+            }
+            try {
+                if (udpate != null) {
+                    udpate.close();
+                }
+            } catch (Exception e2) {
+            }
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+            }
         }
-        int totalSize = size + (Integer)param;
-
-        PreparedStatement udpate = conn.prepareStatement(SQL.UPDATE_TBL_TOTALSIZE);
-        udpate.setInt(1, totalSize);
-        udpate.executeUpdate();
-
         return null;
     }
 }

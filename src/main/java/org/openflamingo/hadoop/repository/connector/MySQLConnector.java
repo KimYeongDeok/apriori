@@ -44,6 +44,7 @@ public class MySQLConnector {
         PreparedStatement pstmt = null;
 
         try {
+            connection.setAutoCommit(false);
             pstmt = connection.prepareStatement(SQL.CREATE_TBL_CADIDATE);
             pstmt.execute();
 
@@ -53,12 +54,20 @@ public class MySQLConnector {
             pstmt = connection.prepareStatement(SQL.CREATE_TBL_SUPPORT);
             pstmt.execute();
             connection.commit();
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
             LOG.error(e);
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (Exception e2) {
+            }
         }
     }
 
-    public void dropTable(){
+    public void dropTable() {
         PreparedStatement pstmt = null;
         try {
             pstmt = connection.prepareStatement("DROP TABLE yd.TBL_CANDIDATE");
