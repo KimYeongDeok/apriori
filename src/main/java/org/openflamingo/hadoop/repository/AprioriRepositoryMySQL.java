@@ -17,7 +17,7 @@ import java.util.List;
  * @author Youngdeok Kim
  * @since 1.0
  */
-public class AprioriRepositoryMySQL {
+public class AprioriRepositoryMySQL implements AprioriRepository{
     private ConsistentHash<MySQLConnector> consistentHash;
     private final String db = "yd";
 

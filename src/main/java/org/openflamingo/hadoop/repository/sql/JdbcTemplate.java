@@ -130,6 +130,7 @@ public abstract class JdbcTemplate {
             conn.setAutoCommit(false);
             returnObject = executeService(conn, param);
             conn.commit();
+            conn.setAutoCommit(true);
         } catch (Exception e) {
             conn.rollback();
             throw e;

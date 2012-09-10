@@ -26,7 +26,6 @@ public class AprioriDriver implements ETLDriver {
         long count = sortAndCountMapper(job, cmd);
         if (count == 0)
             return (int) count;
-
         int level = Integer.valueOf(cmd.getOptionValue("level", "0"));
         conf.setInt("support", 2);
 

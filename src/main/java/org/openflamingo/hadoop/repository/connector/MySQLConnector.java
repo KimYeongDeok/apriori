@@ -1,5 +1,7 @@
 package org.openflamingo.hadoop.repository.connector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openflamingo.hadoop.repository.sql.SQL;
 
 import java.sql.Connection;
@@ -15,6 +17,7 @@ import java.sql.SQLException;
  * @since 1.0
  */
 public class MySQLConnector {
+    private static final Log LOG = LogFactory.getLog(MySQLConnector.class);
     public static final String JDBC_NAME = "com.mysql.jdbc.Driver";
     public static final String ID = "root";
     public static final String PW = "";
@@ -28,17 +31,18 @@ public class MySQLConnector {
     private void connectionDataBase(String url, String db) {
         this.url = "jdbc:mysql://" + url + ":3306/" + db + "?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8﻿";
         try {
-            Class.forName(MySQLConnector.JDBC_NAME);
-            connection = DriverManager.getConnection(this.url, MySQLConnector.ID, MySQLConnector.PW);
+            Class.forName(JDBC_NAME);
+            connection = DriverManager.getConnection(this.url, ID, PW);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            LOG.error(e);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 
     public void createNotExsistTable() {
         PreparedStatement pstmt = null;
+
         try {
             pstmt = connection.prepareStatement(SQL.CREATE_TBL_CADIDATE);
             pstmt.execute();
@@ -50,7 +54,7 @@ public class MySQLConnector {
             pstmt.execute();
             connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 
@@ -67,7 +71,7 @@ public class MySQLConnector {
             pstmt.execute();
             connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 

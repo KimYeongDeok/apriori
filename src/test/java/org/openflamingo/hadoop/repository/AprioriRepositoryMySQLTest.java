@@ -1,5 +1,8 @@
 package org.openflamingo.hadoop.repository;
 
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * Description.
  *
@@ -8,10 +11,10 @@ package org.openflamingo.hadoop.repository;
  */
 public class AprioriRepositoryMySQLTest {
     AprioriRepositoryMySQL repository;
-//    @Before
-//    public void setUp() throws Exception {
-//        repository = new AprioriRepositoryMySQL();
-//    }
+    @Before
+    public void setUp() throws Exception {
+        repository = new AprioriRepositoryMySQL();
+    }
 //
 //    @Test
 //    public void testSaveCadidate() throws Exception {
@@ -27,13 +30,13 @@ public class AprioriRepositoryMySQLTest {
 //        repository.saveSupport(key, support);
 //    }
 //
+    @Test
+    public void testSaveTotalSize() throws Exception {
+        int size = 10;
+        repository.saveTotalSize(size);
+    }
+
 //    @Test
-//    public void testSaveTotalSize() throws Exception {
-//        int size = 10;
-//        repository.saveTotalSize(size);
-//    }
-//
-//    @After
 //    public void after(){
 //        MySQLConnector sqlConnector = new MySQLConnector("127.0.0.1", "yd");
 //        sqlConnector.dropTable();
