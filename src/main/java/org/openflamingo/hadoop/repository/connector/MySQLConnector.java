@@ -33,6 +33,7 @@ public class MySQLConnector {
         try {
             Class.forName(JDBC_NAME);
             connection = DriverManager.getConnection(this.url, ID, PW);
+            createNotExsistTable();
         } catch (ClassNotFoundException e) {
             LOG.error(e);
         } catch (SQLException e) {

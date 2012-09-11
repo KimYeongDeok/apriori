@@ -9,8 +9,8 @@ package org.openflamingo.hadoop.repository.sql;
 public class SQL {
     public static final String  CREATE_TBL_CADIDATE = "CREATE  TABLE IF NOT EXISTS yd.TBL_CANDIDATE (" +
                         "key_cadidate varchar(200) NOT NULL ," +
-                        "value_cadidate VARCHAR(21844) NOT NULL ," +
-                        "support BIGINT NOT NULL ,"+
+                        "value_cadidate VARCHAR(10000) NOT NULL ," +
+                        "support BIGINT NOT NULL DEFAULT 0,"+
                         "INDEX `IDX` USING BTREE (`key_cadidate` ASC));";
 
     public static final String CREATE_TBL_TOTALSIZE = "CREATE TABLE IF NOT EXISTS yd.TBL_TOTAL_SIZE (" +
@@ -18,7 +18,7 @@ public class SQL {
 
     public static final String CREATE_TBL_SUPPORT = "CREATE TABLE IF NOT EXISTS yd.TBL_SUPPORT(" +
                         "key_cadidate VARCHAR(255) NOT NULL ," +
-                        "support BIGINT NOT NULL, " +
+                        "support BIGINT NOT NULL DEFAULT 0, " +
                         "INDEX `IDX` USING BTREE (`key_cadidate` ASC));";
     public static final String INSERT_TBL_CADIDATE = "INSERT INTO yd.TBL_CANDIDATE (key_cadidate, value_cadidate, support)" +
             "VALUES (?, ?, ?);";

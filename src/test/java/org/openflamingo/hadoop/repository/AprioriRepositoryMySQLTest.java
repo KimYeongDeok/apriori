@@ -12,7 +12,6 @@ public class AprioriRepositoryMySQLTest {
 //    public void setUp() throws Exception {
 //        repository = new AprioriRepositoryMySQL();
 //    }
-//
 //    @Test
 //    public void testSaveCadidate() throws Exception {
 //        String key = "a";
@@ -33,10 +32,16 @@ public class AprioriRepositoryMySQLTest {
 //        int size = 10;
 //        repository.saveTotalSize(size);
 //    }
-
+//
+//
 //    @Test
 //    public void after(){
-//        MySQLConnector sqlConnector = new MySQLConnector("127.0.0.1", "yd");
-//        sqlConnector.dropTable();
+//        ArrayList<MySQLConnector> list = new ArrayList<MySQLConnector>();
+//        list.add(new MySQLConnector("192.168.0.3", "yd"));
+//        list.add(new MySQLConnector("192.168.0.2", "yd"));
+//
+//        for (MySQLConnector mySQLConnector : list) {
+//            mySQLConnector.dropTable();
+//        }
 //    }
 }

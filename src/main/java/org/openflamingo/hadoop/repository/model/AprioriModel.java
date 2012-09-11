@@ -9,7 +9,7 @@ package org.openflamingo.hadoop.repository.model;
 public class AprioriModel {
     private String key;
     private String value;
-    private long support;
+    private int support;
 
     public String getKey() {
         return key;
@@ -27,11 +27,11 @@ public class AprioriModel {
         this.value = value;
     }
 
-    public long getSupport() {
+    public int getSupport() {
         return support;
     }
 
-    public void setSupport(long support) {
+    public void setSupport(int support) {
         this.support = support;
     }
 }

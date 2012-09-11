@@ -66,7 +66,7 @@ public class AprioriReduce extends Reducer<Text, Text, Text, Text> {
             supportMap.put(value, 1);
     }
 
-    private void saveCandidate(Text key, String text, long support) {
+    private void saveCandidate(Text key, String text, int support) {
         try {
             repository.saveCadidate(key.toString(), text, support);
         } catch (Exception e) {

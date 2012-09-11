@@ -23,15 +23,16 @@ public class AprioriRepositoryMySQL implements AprioriRepository{
 
     public AprioriRepositoryMySQL() {
         List<MySQLConnector> list = new ArrayList<MySQLConnector>();
-        MySQLConnector mySQLConnector = new MySQLConnector("127.0.0.1", db);
-        mySQLConnector.createNotExsistTable();
-        list.add(mySQLConnector);
+        list.add(new MySQLConnector("192.168.0.3",db));
+        list.add(new MySQLConnector("192.168.0.2",db));
+
+
 
         consistentHash = new ConsistentHash<MySQLConnector>(Hashing.md5(), 3, list);
     }
 
 
-    public void saveCadidate(final String key, final String value, final long support) throws Exception {
+    public void saveCadidate(final String key, final String value, final int support) throws Exception {
         AprioriModel model = new AprioriModel();
         model.setKey(key);
         model.setValue(value);

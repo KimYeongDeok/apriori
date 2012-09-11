@@ -26,6 +26,6 @@ public class SqlInsertSupport extends JdbcTemplate{
     protected void setParameter(PreparedStatement pstmt, Object param) throws SQLException {
         AprioriModel model = (AprioriModel) param;
         pstmt.setString(1, model.getKey());
-        pstmt.setLong(2, model.getSupport());
+        pstmt.setInt(2, model.getSupport());
     }
 }
