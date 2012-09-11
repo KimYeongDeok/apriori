@@ -32,7 +32,7 @@ public class AprioriDriver implements ETLDriver {
         if (count == 0)
             return (int) count;
 
-//       saveTotalSize(count);
+       saveTotalSize(count);
 
         int level = Integer.valueOf(cmd.getOptionValue("level", "0"));
         conf.setInt("support", 2);

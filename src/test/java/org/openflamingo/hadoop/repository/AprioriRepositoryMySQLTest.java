@@ -1,5 +1,7 @@
 package org.openflamingo.hadoop.repository;
 
+import org.junit.Test;
+
 /**
  * Description.
  *
@@ -27,11 +29,11 @@ public class AprioriRepositoryMySQLTest {
 //        repository.saveSupport(key, support);
 //    }
 ////
-//    @Test
-//    public void testSaveTotalSize() throws Exception {
-//        int size = 10;
-//        repository.saveTotalSize(size);
-//    }
+    @Test
+    public void testSaveTotalSize() throws Exception {
+        int size = 10;
+        repository.saveTotalSize(size);
+    }
 
 //    @Test
 //    public void after(){
