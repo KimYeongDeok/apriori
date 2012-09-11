@@ -28,17 +28,19 @@ public class AprioriDriver implements ETLDriver {
 
     @Override
     public int service(Job job, CommandLine cmd, Configuration conf) throws Exception {
-        long count = sortAndCountMapper(job, cmd);
-        if (count == 0)
-            return (int) count;
+        movieLensMapReduce(job, cmd);
 
-        saveTotalSize(count);
-
-        int level = Integer.valueOf(cmd.getOptionValue("level", "0"));
-        conf.setInt("support", 2);
-
-        firstAprioriMapReduce(cmd, conf);
-        othersAprioriMapReduece(cmd, conf, level);
+//        long count = sortAndCountMapper(job, cmd);
+//        if (count == 0)
+//            return (int) count;
+//
+//        saveTotalSize(count);
+//
+//        int level = Integer.valueOf(cmd.getOptionValue("level", "0"));
+//        conf.setInt("support", 2);
+//
+//        firstAprioriMapReduce(cmd, conf);
+//        othersAprioriMapReduece(cmd, conf, level);
 
         return 1;
     }
@@ -95,4 +97,25 @@ public class AprioriDriver implements ETLDriver {
 
         return counter.getValue();
     }
+    private int movieLensMapReduce(Job job, CommandLine cmd) throws IOException, InterruptedException, ClassNotFoundException {
+         int result;
+         // Mapper Reduce Class
+         job.setMapperClass(MovieLensMapper.class);
+         job.setReducerClass(MovieLensReduce.class);
+
+         // Output Key/Value
+         job.setMapOutputKeyClass(Text.class);
+         job.setMapOutputValueClass(Text.class);
+
+         job.setInputFormatClass(TextInputFormat.class);
+         job.setOutputFormatClass(TextOutputFormat.class);
+
+         job.getConfiguration().set("delimiter", cmd.getOptionValue("delimiter"));
+         job.setNumReduceTasks(1);
+
+//        FileInputFormat.addInputPaths(job, cmd.getOptionValue("input"));
+//        FileOutputFormat.setOutputPath(job, new Path(cmd.getOptionValue("output")));
+
+         return job.waitForCompletion(true) ? 1 : 0;
+     }
 }

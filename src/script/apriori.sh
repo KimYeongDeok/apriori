@@ -1,8 +1,8 @@
 #!/bin/sh
 
 UCLOUD="root@14.63.225.83"
-INPUT="youngdeok/apriori/apriori.data"
-OUTPUT="youngdeok/apriori/output"
+INPUT="youngdeok/movie/ratings_shot.dat"
+OUTPUT="youngdeok/movie/output"
 MAPREDUCE="FrontDriver"
 DELIMITER=","
 COMMAND="apriori"
