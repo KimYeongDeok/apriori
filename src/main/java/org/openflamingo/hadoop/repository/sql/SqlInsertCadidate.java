@@ -27,6 +27,7 @@ public class SqlInsertCadidate extends JdbcTemplate {
         AprioriModel model = (AprioriModel) param;
         pstmt.setString(1, model.getKey());
         pstmt.setString(2, model.getValue());
+        pstmt.setLong(3, model.getSupport());
     }
 }
 

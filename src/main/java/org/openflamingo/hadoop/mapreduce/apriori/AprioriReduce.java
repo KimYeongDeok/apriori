@@ -8,9 +8,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.openflamingo.hadoop.repository.AprioriRepositoryMySQL;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Description.
@@ -33,9 +31,15 @@ public class AprioriReduce extends Reducer<Text, Text, Text, Text> {
     protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
         Iterator<Text> iterator = values.iterator();
         Set<String> list = new HashSet<String>();
+        Map<String, Integer> supportMap = new HashMap<String, Integer>();
+
         int size = 0;
         while (iterator.hasNext()) {
-            list.add(iterator.next().toString());
+            String value = iterator.next().toString();
+            if(list.contains(value))
+                countingValue(supportMap, value);
+            else
+                list.add(value);
             size++;
         }
 
@@ -47,13 +51,24 @@ public class AprioriReduce extends Reducer<Text, Text, Text, Text> {
             if("NULL".equals(text))
                 continue;
             context.write(key, new Text(text));
-            saveCandidate(key, text);
+
+            if(supportMap.containsKey(text))
+                saveCandidate(key, text, supportMap.get(text));
+            else
+                saveCandidate(key, text, 1);
         }
     }
 
-    private void saveCandidate(Text key, String text) {
+    private void countingValue(Map<String, Integer> supportMap, String value) {
+        if(supportMap.containsKey(value))
+            supportMap.put(value, supportMap.get(value) + 1);
+        else
+            supportMap.put(value, 1);
+    }
+
+    private void saveCandidate(Text key, String text, long support) {
         try {
-            repository.saveCadidate(key.toString(), text);
+            repository.saveCadidate(key.toString(), text, support);
         } catch (Exception e) {
             LOG.error(e);
         }

@@ -24,7 +24,7 @@ import java.io.IOException;
  * @since 1.0
  */
 public class AprioriDriver implements ETLDriver {
-    private static final Log LOG = LogFactory.getLog(AprioriFirstMapper.class);
+    private static final Log LOG = LogFactory.getLog(AprioriDriver.class);
 
     @Override
     public int service(Job job, CommandLine cmd, Configuration conf) throws Exception {
@@ -32,7 +32,7 @@ public class AprioriDriver implements ETLDriver {
         if (count == 0)
             return (int) count;
 
-       saveTotalSize(count);
+        saveTotalSize(count);
 
         int level = Integer.valueOf(cmd.getOptionValue("level", "0"));
         conf.setInt("support", 2);
@@ -44,10 +44,10 @@ public class AprioriDriver implements ETLDriver {
     }
 
 
-    private void saveTotalSize(long valueSize) {
+    private void saveTotalSize(long count) {
         AprioriRepositoryMySQL repository = new AprioriRepositoryMySQL();
         try {
-            repository.saveTotalSize(valueSize);
+            repository.saveTotalSize(count);
         } catch (Exception e) {
             LOG.error(e);
         }

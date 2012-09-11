@@ -10,6 +10,7 @@ public class SQL {
     public static final String  CREATE_TBL_CADIDATE = "CREATE  TABLE IF NOT EXISTS yd.TBL_CANDIDATE (" +
                         "key_cadidate varchar(200) NOT NULL ," +
                         "value_cadidate VARCHAR(21844) NOT NULL ," +
+                        "support BIGINT NOT NULL ,"+
                         "INDEX `IDX` USING BTREE (`key_cadidate` ASC));";
 
     public static final String CREATE_TBL_TOTALSIZE = "CREATE TABLE IF NOT EXISTS yd.TBL_TOTAL_SIZE (" +
@@ -19,8 +20,8 @@ public class SQL {
                         "key_cadidate VARCHAR(255) NOT NULL ," +
                         "support BIGINT NOT NULL, " +
                         "INDEX `IDX` USING BTREE (`key_cadidate` ASC));";
-    public static final String INSERT_TBL_CADIDATE = "INSERT INTO yd.TBL_CANDIDATE (key_cadidate, value_cadidate)" +
-            "VALUES (?, ?);";
+    public static final String INSERT_TBL_CADIDATE = "INSERT INTO yd.TBL_CANDIDATE (key_cadidate, value_cadidate, support)" +
+            "VALUES (?, ?, ?);";
 
     public static final String INSERT_TBL_SUPPORT = "INSERT INTO yd.TBL_SUPPORT" +
             "(key_cadidate, support)" +

@@ -31,10 +31,11 @@ public class AprioriRepositoryMySQL implements AprioriRepository{
     }
 
 
-    public void saveCadidate(final String key, final String value) throws Exception {
+    public void saveCadidate(final String key, final String value, final long support) throws Exception {
         AprioriModel model = new AprioriModel();
         model.setKey(key);
         model.setValue(value);
+        model.setSupport(support);
 
         MySQLConnector connector = consistentHash.get(key);
 
