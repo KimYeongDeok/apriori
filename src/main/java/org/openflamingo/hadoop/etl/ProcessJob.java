@@ -94,7 +94,7 @@ public class ProcessJob {
 		job.setMapperClass(maapperClass);
         job.setReducerClass(reduceClass);
 
-		job.setNumReduceTasks(1);
+		job.setNumReduceTasks(8);
         job.getConfiguration().set("delimiter",cmd.getOptionValue("delimiter"));
 		job.waitForCompletion(true);
 		boolean success = job.waitForCompletion(true);

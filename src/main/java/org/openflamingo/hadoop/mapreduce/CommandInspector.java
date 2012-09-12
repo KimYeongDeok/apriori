@@ -32,6 +32,7 @@ public class CommandInspector {
 		options.addOption("delimiter", true, "컬럼 구분자 (필수)");
 		options.addOption("command", true, "-command name");
 		options.addOption("level", true, "-level 입력값");
+        options.addOption("support", true, "-level 입력값");
 		return options;
 	}
 

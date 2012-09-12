@@ -21,13 +21,11 @@ import java.util.StringTokenizer;
 public class AprioriMapper extends Mapper<LongWritable, Text, Text, Text> {
     private static final Log LOG = LogFactory.getLog(AprioriMapper.class);
     private String delimiter;
-    private int level;
 
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
         Configuration configuration = context.getConfiguration();
         delimiter = configuration.get("delimiter");
-        level = configuration.getInt("level", 0);
     }
 
     @Override

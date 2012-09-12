@@ -19,16 +19,18 @@ import java.sql.SQLException;
 public class MySQLConnector {
     private static final Log LOG = LogFactory.getLog(MySQLConnector.class);
     public static final String JDBC_NAME = "com.mysql.jdbc.Driver";
-    public static final String ID = "root";
-    public static final String PW = "";
+    public static final String ID = "yd";
+    public static final String PW = "hadoop";
     private String url;
     private Connection connection;
 
+    public MySQLConnector() {
+    }
     public MySQLConnector(String url, String db) {
         connectionDataBase(url, db);
     }
 
-    private void connectionDataBase(String url, String db) {
+    public void connectionDataBase(String url, String db) {
         this.url = "jdbc:mysql://" + url + ":3306/" + db + "?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8﻿";
         try {
             Class.forName(JDBC_NAME);
@@ -71,6 +73,7 @@ public class MySQLConnector {
     public void dropTable() {
         PreparedStatement pstmt = null;
         try {
+            connection.setAutoCommit(false);
             pstmt = connection.prepareStatement("DROP TABLE yd.TBL_CANDIDATE");
             pstmt.execute();
 
@@ -80,6 +83,7 @@ public class MySQLConnector {
             pstmt = connection.prepareStatement("DROP TABLE yd.TBL_SUPPORT");
             pstmt.execute();
             connection.commit();
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
             LOG.error(e);
         }

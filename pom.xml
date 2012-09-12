@@ -108,7 +108,7 @@
                             <goal>unpack-dependencies</goal>
                         </goals>
                         <configuration>
-                            <includeArtifactIds>mysql-connector-java,guava</includeArtifactIds>
+                            <includeArtifactIds>mysql-connector-java,guava,commons-pool</includeArtifactIds>
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                         </configuration>
                     </execution>

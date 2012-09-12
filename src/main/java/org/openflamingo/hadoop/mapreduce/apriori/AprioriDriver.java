@@ -18,8 +18,10 @@ import org.openflamingo.hadoop.etl.ProcessJob;
 import org.openflamingo.hadoop.mapreduce.ETLDriver;
 import org.openflamingo.hadoop.mapreduce.FrontDriver;
 import org.openflamingo.hadoop.repository.AprioriRepositoryMySQL;
+import org.openflamingo.hadoop.repository.connector.MySQLConnector;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Description.
@@ -32,6 +34,19 @@ public class AprioriDriver implements ETLDriver {
 
     @Override
     public int service(Job job, CommandLine cmd, Configuration conf) throws Exception {
+        ArrayList<MySQLConnector> list = new ArrayList<MySQLConnector>();
+        list.add(new MySQLConnector("hadoop2", "yd"));
+        list.add(new MySQLConnector("hadoop3", "yd"));
+        list.add(new MySQLConnector("hadoop4", "yd"));
+        list.add(new MySQLConnector("hadoop5", "yd"));
+        list.add(new MySQLConnector("hadoop6", "yd"));
+        list.add(new MySQLConnector("hadoop7", "yd"));
+        list.add(new MySQLConnector("hadoop8", "yd"));
+
+        for (MySQLConnector mySQLConnector : list) {
+            mySQLConnector.dropTable();
+        }
+
         movieLensMapReduce(job, cmd);
 
         long count = sortAndCountMapper(conf, cmd);
@@ -41,7 +56,9 @@ public class AprioriDriver implements ETLDriver {
         saveTotalSize(count);
 
         int level = Integer.valueOf(cmd.getOptionValue("level", "0"));
-        conf.setInt("support", 2);
+
+        job.getConfiguration().set("delimiter", cmd.getOptionValue("delimiter"));
+        job.getConfiguration().setInt("support", Integer.valueOf(cmd.getOptionValue("support")));
 
         firstAprioriMapReduce(cmd, conf);
         othersAprioriMapReduece(cmd, conf, level);
@@ -122,8 +139,7 @@ public class AprioriDriver implements ETLDriver {
          job.setInputFormatClass(TextInputFormat.class);
          job.setOutputFormatClass(TextOutputFormat.class);
 
-         job.getConfiguration().set("delimiter", cmd.getOptionValue("delimiter"));
-         job.setNumReduceTasks(1);
+         job.setNumReduceTasks(8);
 
 //        FileInputFormat.addInputPaths(job, cmd.getOptionValue("input"));
 //        FileOutputFormat.setOutputPath(job, new Path(cmd.getOptionValue("output")));
