@@ -63,7 +63,7 @@ public class AprioriMapper extends Mapper<LongWritable, Text, Text, Text> {
         for (String stringValue : stringValues) {
             builder.append(stringValue).append(delimiter);
         }
-        builder.delete(builder.length() - 1, builder.length());
+        builder.delete(builder.length() - delimiter.length(), builder.length());
         return builder.toString();
     }
 

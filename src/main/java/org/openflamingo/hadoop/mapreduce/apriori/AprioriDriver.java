@@ -4,15 +4,19 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.mapreduce.Counters;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.openflamingo.hadoop.etl.ProcessJob;
 import org.openflamingo.hadoop.mapreduce.ETLDriver;
+import org.openflamingo.hadoop.mapreduce.FrontDriver;
 import org.openflamingo.hadoop.repository.AprioriRepositoryMySQL;
 
 import java.io.IOException;
@@ -30,17 +34,17 @@ public class AprioriDriver implements ETLDriver {
     public int service(Job job, CommandLine cmd, Configuration conf) throws Exception {
         movieLensMapReduce(job, cmd);
 
-//        long count = sortAndCountMapper(job, cmd);
-//        if (count == 0)
-//            return (int) count;
-//
-//        saveTotalSize(count);
-//
-//        int level = Integer.valueOf(cmd.getOptionValue("level", "0"));
-//        conf.setInt("support", 2);
-//
-//        firstAprioriMapReduce(cmd, conf);
-//        othersAprioriMapReduece(cmd, conf, level);
+        long count = sortAndCountMapper(conf, cmd);
+        if (count == 0)
+            return (int) count;
+
+        saveTotalSize(count);
+
+        int level = Integer.valueOf(cmd.getOptionValue("level", "0"));
+        conf.setInt("support", 2);
+
+        firstAprioriMapReduce(cmd, conf);
+        othersAprioriMapReduece(cmd, conf, level);
 
         return 1;
     }
@@ -69,16 +73,24 @@ public class AprioriDriver implements ETLDriver {
     }
 
     private void firstAprioriMapReduce(CommandLine cmd, Configuration conf) throws IOException, InterruptedException, ClassNotFoundException {
-        String input = cmd.getOptionValue("output");
-        String output = input + "1";
+        String input = cmd.getOptionValue("output")+"0";
+        String output = cmd.getOptionValue("output") + "1";
         ProcessJob firstMapperJob = new ProcessJob(cmd, conf, input, output);
         firstMapperJob.invoke(AprioriFirstMapper.class, AprioriReduce.class);
     }
 
-    private long sortAndCountMapper(Job job, CommandLine cmd) throws IOException, InterruptedException, ClassNotFoundException {
+    private long sortAndCountMapper(Configuration conf, CommandLine cmd) throws IOException, InterruptedException, ClassNotFoundException {
+        String input = cmd.getOptionValue("output");
+        String sortedOutput = input+"0";
+
         int result;
+        Job job = new Job(conf);
+        job.setJarByClass(FrontDriver.class);
         // Mapper Class
         job.setMapperClass(AprioriSortMapper.class);
+
+        FileInputFormat.addInputPaths(job, input);
+        FileOutputFormat.setOutputPath(job, new Path(sortedOutput));
 
         // Output Key/Value
         job.setMapOutputKeyClass(NullWritable.class);

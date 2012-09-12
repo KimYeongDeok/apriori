@@ -56,7 +56,7 @@ public class AprioriSortMapper extends Mapper<LongWritable, Text, NullWritable, 
         for (String string : strings) {
             builder.append(string).append(delimiter);
         }
-        builder.delete(builder.length()-1, builder.length());
+        builder.delete(builder.length()-delimiter.length(), builder.length());
         return builder.toString();
     }
 }

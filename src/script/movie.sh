@@ -1,7 +1,7 @@
 #!/bin/sh
 
 UCLOUD="root@14.63.225.83"
-INPUT="youngdeok/movie/movie.dat"
+INPUT="youngdeok/movie/ratings_shot.dat"
 OUTPUT="youngdeok/movie/output"
 MAPREDUCE="FrontDriver"
 DELIMITER="::"
