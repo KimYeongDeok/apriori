@@ -1,4 +1,4 @@
-package org.openflamingo.hadoop.etl.utils;
+package org.openflamingo.hadoop.commons.utils;
 
 /**
  * Description.

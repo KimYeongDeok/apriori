@@ -1,4 +1,4 @@
-package org.openflamingo.hadoop.etl;
+package org.openflamingo.hadoop.commons;
 
 import org.openflamingo.hadoop.mapreduce.apriori.AprioriDriver;
 
@@ -12,7 +12,7 @@ import java.util.Map;
  * @author Youngdeok Kim
  * @since 1.0
  */
-public class ETLObjectHouse {
+public class MapReduceObjectStore {
 	/** objectMap은 ETL객체들을 보관 */
 	private static Map<String, Object> objectMap = new HashMap<String, Object>();
 

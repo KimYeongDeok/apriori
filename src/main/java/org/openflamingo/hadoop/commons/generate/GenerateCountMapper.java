@@ -1,4 +1,4 @@
-package org.openflamingo.hadoop.etl.generate;
+package org.openflamingo.hadoop.commons.generate;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
@@ -8,7 +8,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 
 /**
- * 이 클래스는 {@link org.openflamingo.hadoop.etl.ProcessJob}에서 사용되는 카운터 {@code
+ * 이 클래스는 {@link org.openflamingo.hadoop.commons.job.ProcessJob}에서 사용되는 카운터 {@code
  * Mapper}이다. {@code ProcessJob}에서 사용되는 {@code Mapper}이며 {@code Mapper}별로
  * 카운터 해서 총 개수를 {@link org.apache.hadoop.mapreduce.Counter}에 클래스 이르으로 저장
  * 한다.
