@@ -1,5 +1,7 @@
 package org.openflamingo.hadoop.repository.sql;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openflamingo.hadoop.repository.connector.MySQLConnector;
 
 import java.sql.Connection;
@@ -14,6 +16,7 @@ import java.sql.SQLException;
  * @since 1.0
  */
 public class SqlInsertTotalSize extends JdbcTemplate {
+    private static final Log LOG = LogFactory.getLog(SqlInsertTotalSize.class);
     public SqlInsertTotalSize(MySQLConnector mySQLConnector) {
         super(mySQLConnector);
     }

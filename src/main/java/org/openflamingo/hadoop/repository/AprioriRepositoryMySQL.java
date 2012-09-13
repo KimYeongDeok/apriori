@@ -3,6 +3,7 @@ package org.openflamingo.hadoop.repository;
 import com.google.common.hash.Hashing;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openflamingo.hadoop.commons.MapReduceConfigration;
 import org.openflamingo.hadoop.repository.connector.ConsistentHash;
 import org.openflamingo.hadoop.repository.connector.MySQLConnectionPool;
 import org.openflamingo.hadoop.repository.connector.MySQLConnector;
@@ -24,21 +25,21 @@ import java.util.concurrent.Executors;
  */
 public class AprioriRepositoryMySQL implements AprioriRepository {
     private static final Log LOG = LogFactory.getLog(AprioriRepositoryMySQL.class);
-    private final ExecutorService exec = Executors.newFixedThreadPool(10);
+    private final ExecutorService exec = Executors.newFixedThreadPool(MapReduceConfigration.NUMBER_THREADPOOL);
     private final ConsistentHash<MySQLConnectionPool> consistentHash;
-    private final String db = "yd";
 
     public AprioriRepositoryMySQL() {
         List<MySQLConnectionPool> list = new ArrayList<MySQLConnectionPool>();
-//        list.add(new MySQLConnector("192.168.0.3",db));
-//        list.add(new MySQLConnector("192.168.0.2",db));
-        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop2", 5));
-        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop3", 5));
-        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop4", 5));
-        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop5", 5));
-        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop6", 5));
-        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop7", 5));
-        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop8", 5));
+        list.add(new MySQLConnectionPool(MySQLConnector.class, "192.168.0.2", MapReduceConfigration.NUMBER_CONNECTIONPOOL));
+        list.add(new MySQLConnectionPool(MySQLConnector.class, "192.168.0.2", MapReduceConfigration.NUMBER_CONNECTIONPOOL));
+        list.add(new MySQLConnectionPool(MySQLConnector.class, "192.168.0.2", MapReduceConfigration.NUMBER_CONNECTIONPOOL));
+//        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop2", 5));
+//        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop3", 5));
+//        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop4", 5));
+//        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop5", 5));
+//        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop6", 5));
+//        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop7", 5));
+//        list.add(new MySQLConnectionPool(MySQLConnector.class, "hadoop8", 5));
 
         consistentHash = new ConsistentHash<MySQLConnectionPool>(Hashing.md5(), 3, list);
     }
@@ -82,7 +83,9 @@ public class AprioriRepositoryMySQL implements AprioriRepository {
 
                 MySQLConnectionPool connectionPool = consistentHash.get(key);
                 MySQLConnector connector = null;
+
                 try {
+                    connector = connectionPool.getMySQLConnector();
                     SqlInsertSupport insert = new SqlInsertSupport(connector);
                     insert.executeUpdate(model);
                 } catch (Exception e) {

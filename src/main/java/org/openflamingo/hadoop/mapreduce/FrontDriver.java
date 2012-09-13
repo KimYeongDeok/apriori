@@ -6,7 +6,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.ToolRunner;
-import org.openflamingo.hadoop.etl.ETLObjectHouse;
+import org.openflamingo.hadoop.commons.MapReduceObjectStore;
 
 /**
  * 모든 ETL Driver가 실행되기전 기본 설정 한다. 사용자가 입력하는 args를
@@ -38,7 +38,7 @@ public class FrontDriver extends org.apache.hadoop.conf.Configured implements or
 
         CommandLine cmd = parseArguements(args, job);
 
-        ETLDriver driver = (ETLDriver) ETLObjectHouse.findClassByName(cmd.getOptionValue("command"));
+        ETLDriver driver = (ETLDriver) MapReduceObjectStore.findClassByName(cmd.getOptionValue("command"));
         assert driver != null;
 //		driver.service(job, cmd, getConf());
 

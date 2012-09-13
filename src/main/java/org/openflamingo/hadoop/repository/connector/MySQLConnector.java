@@ -2,6 +2,7 @@ package org.openflamingo.hadoop.repository.connector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openflamingo.hadoop.commons.MapReduceConfigration;
 import org.openflamingo.hadoop.repository.sql.SQL;
 
 import java.sql.Connection;
@@ -18,23 +19,21 @@ import java.sql.SQLException;
  */
 public class MySQLConnector {
     private static final Log LOG = LogFactory.getLog(MySQLConnector.class);
-    public static final String JDBC_NAME = "com.mysql.jdbc.Driver";
-    public static final String ID = "yd";
-    public static final String PW = "hadoop";
+
     private String url;
     private Connection connection;
 
     public MySQLConnector() {
     }
-    public MySQLConnector(String url, String db) {
-        connectionDataBase(url, db);
+    public MySQLConnector(String url) {
+        connectionDataBase(url);
     }
 
-    public void connectionDataBase(String url, String db) {
-        this.url = "jdbc:mysql://" + url + ":3306/" + db + "?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8﻿";
+    public void connectionDataBase(String url) {
+        this.url = "jdbc:mysql://" + url + ":3306/" + MapReduceConfigration.DB + "?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8﻿";
         try {
-            Class.forName(JDBC_NAME);
-            connection = DriverManager.getConnection(this.url, ID, PW);
+            Class.forName(MapReduceConfigration.JDBC_NAME);
+            connection = DriverManager.getConnection(this.url, MapReduceConfigration.ID, MapReduceConfigration.PW);
             createNotExsistTable();
         } catch (ClassNotFoundException e) {
             LOG.error(e);

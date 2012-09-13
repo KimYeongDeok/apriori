@@ -25,6 +25,7 @@ public class AprioriReduce extends Reducer<Text, Text, Text, Text> {
         Configuration configuration = context.getConfiguration();
         support = configuration.getInt("support", 0);
         repository = new AprioriRepositoryMySQL();
+        LOG.info("Repository : "+repository);
     }
 
     @Override

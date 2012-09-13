@@ -15,7 +15,6 @@ import org.apache.commons.pool.impl.GenericObjectPool;
  */
 public class MySQLConnectionPool {
     private static final Log LOG = LogFactory.getLog(MySQLConnectionPool.class);
-    private static final String db = "yd";
     private final ObjectPool pool;
 
     public MySQLConnectionPool(final Class clz, final String url, int repeat) {
@@ -23,7 +22,7 @@ public class MySQLConnectionPool {
             @Override
             public Object makeObject() throws Exception {
                 MySQLConnector connector = (MySQLConnector) clz.newInstance();
-                connector.connectionDataBase(url, db);
+                connector.connectionDataBase(url);
                 return connector;
             }
         };
