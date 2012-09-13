@@ -1,4 +1,4 @@
-package org.openflamingo.hadoop.etl;
+package org.openflamingo.hadoop.commons.job;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.hadoop.conf.Configuration;
@@ -78,7 +78,7 @@ public class ProcessJob {
 	 * @throws InterruptedException
 	 * @throws ClassNotFoundException
 	 */
-	public ProcessJob invoke(Class maapperClass, Class reduceClass) throws IOException, InterruptedException, ClassNotFoundException {
+	public ProcessJob start(Class maapperClass, Class reduceClass) throws IOException, InterruptedException, ClassNotFoundException {
 		this.mapperClass = maapperClass;
 		job = new Job(conf);
 		job.setJarByClass(FrontDriver.class);
@@ -94,8 +94,7 @@ public class ProcessJob {
 		job.setMapperClass(maapperClass);
         job.setReducerClass(reduceClass);
 
-		job.setNumReduceTasks(8);
-        job.getConfiguration().set("delimiter",cmd.getOptionValue("delimiter"));
+		job.setNumReduceTasks(1);
 		job.waitForCompletion(true);
 		boolean success = job.waitForCompletion(true);
 		if (!success) {
@@ -103,7 +102,6 @@ public class ProcessJob {
 			return null;
 		}
 		this.success = true;
-//		removeTempOuputFile(cmd.getOptionValue("output"));
 		return this;
 	}
 
