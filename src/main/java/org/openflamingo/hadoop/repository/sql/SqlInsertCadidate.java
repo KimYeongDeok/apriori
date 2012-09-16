@@ -19,7 +19,7 @@ public class SqlInsertCadidate extends JdbcTemplate {
 
     @Override
     protected String setSQL() {
-        return SQL.INSERT_TBL_CADIDATE;
+        return SQL.INSERT_TBL_CANDIDATE;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class SqlInsertCadidate extends JdbcTemplate {
         AprioriModel model = (AprioriModel) param;
         pstmt.setString(1, model.getKey());
         pstmt.setString(2, model.getValue());
-        pstmt.setInt(3, model.getSupport());
+        pstmt.setLong(3, model.getSupport());
     }
 }
 

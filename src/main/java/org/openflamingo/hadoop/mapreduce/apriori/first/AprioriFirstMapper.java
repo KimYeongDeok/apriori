@@ -1,4 +1,4 @@
-package org.openflamingo.hadoop.mapreduce.apriori;
+package org.openflamingo.hadoop.mapreduce.apriori.first;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,10 +1,13 @@
 package org.openflamingo.hadoop.repository.sql;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openflamingo.hadoop.repository.connector.MySQLConnector;
 
 import java.sql.*;
 
 public abstract class JdbcTemplate {
+	private static final Log LOG = LogFactory.getLog(JdbcTemplate.class);
     private final MySQLConnector mySQLConnector;
 
     public JdbcTemplate(MySQLConnector mySQLConnector) {
@@ -42,17 +45,43 @@ public abstract class JdbcTemplate {
             } catch (Exception e2) {
                 throw e2;
             }
-            try {
-                if (conn != null) {
-                    conn.setAutoCommit(true);
-                    conn.close();
-                }
-            } catch (Exception e2) {
-                throw e2;
-            }
         }
         return returnObject;
     }
+	public Object executeQuery(Object param) throws Exception {
+       Object returnObject = null;
+       PreparedStatement pstmt = null;
+       ResultSet rs = null;
+       Connection conn = mySQLConnector.getConnection();
+       try {
+           pstmt = conn.prepareStatement(setSQL());
+           setParameter(pstmt, param);
+           conn.setAutoCommit(false);
+           rs = pstmt.executeQuery();
+           conn.commit();
+           conn.setAutoCommit(true);
+           returnObject = resultMapping(rs);
+       } catch (Exception e) {
+           conn.rollback();
+           throw e;
+       } finally {
+           try {
+               if (rs != null) {
+                   rs.close();
+               }
+           } catch (Exception e2) {
+               throw e2;
+           }
+           try {
+               if (pstmt != null) {
+                   pstmt.close();
+               }
+           } catch (Exception e2) {
+               throw e2;
+           }
+       }
+       return returnObject;
+   }
 
     public Object executeUpdate() throws Exception {
         Object returnObject = null;
@@ -72,14 +101,6 @@ public abstract class JdbcTemplate {
             try {
                 if (pstmt != null) {
                     pstmt.close();
-                }
-            } catch (Exception e2) {
-                throw e2;
-            }
-            try {
-                if (conn != null) {
-                    conn.setAutoCommit(true);
-                    conn.close();
                 }
             } catch (Exception e2) {
                 throw e2;
@@ -110,14 +131,6 @@ public abstract class JdbcTemplate {
                } catch (Exception e2) {
                    throw e2;
                }
-//               try {
-//                   if (conn != null) {
-//                       conn.setAutoCommit(true);
-//                       conn.close();
-//                   }
-//               } catch (Exception e2) {
-//                   throw e2;
-//               }
            }
            return returnObject;
        }
@@ -142,14 +155,6 @@ public abstract class JdbcTemplate {
             } catch (Exception e2) {
                 throw e2;
             }
-//            try {
-//                if (conn != null) {
-//                    conn.setAutoCommit(true);
-//                    conn.close();
-//                }
-//            } catch (Exception e2) {
-//                throw e2;
-//            }
         }
         return returnObject;
     }

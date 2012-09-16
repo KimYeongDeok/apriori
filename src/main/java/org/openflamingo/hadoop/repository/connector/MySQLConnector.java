@@ -47,7 +47,7 @@ public class MySQLConnector {
 
         try {
             connection.setAutoCommit(false);
-            pstmt = connection.prepareStatement(SQL.CREATE_TBL_CADIDATE);
+            pstmt = connection.prepareStatement(SQL.CREATE_TBL_CANDIDATE);
             pstmt.execute();
 
             pstmt = connection.prepareStatement(SQL.CREATE_TBL_TOTALSIZE);

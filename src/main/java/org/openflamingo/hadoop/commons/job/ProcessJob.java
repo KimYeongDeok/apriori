@@ -11,6 +11,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.openflamingo.hadoop.commons.MapReduceConfigration;
 import org.openflamingo.hadoop.mapreduce.FrontDriver;
 import org.openflamingo.hadoop.util.HdfsUtils;
 
@@ -94,7 +95,7 @@ public class ProcessJob {
 		job.setMapperClass(maapperClass);
         job.setReducerClass(reduceClass);
 
-		job.setNumReduceTasks(1);
+		job.setNumReduceTasks(MapReduceConfigration.NUMBER_REDUCE_TASK);
 		job.waitForCompletion(true);
 		boolean success = job.waitForCompletion(true);
 		if (!success) {

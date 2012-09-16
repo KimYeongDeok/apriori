@@ -1,4 +1,4 @@
-package org.openflamingo.hadoop.mapreduce.apriori;
+package org.openflamingo.hadoop.mapreduce.apriori.first;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,6 +21,7 @@ import java.util.StringTokenizer;
 public class AprioriMapper extends Mapper<LongWritable, Text, Text, Text> {
     private static final Log LOG = LogFactory.getLog(AprioriMapper.class);
     private String delimiter;
+    private int number;
 
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
@@ -34,7 +35,7 @@ public class AprioriMapper extends Mapper<LongWritable, Text, Text, Text> {
         int indexSpace = tempRow.indexOf("\t");
 
         String firstRow = tempRow.substring(0, indexSpace);
-        String secondRow = tempRow.substring(indexSpace+1, tempRow.length());
+        String secondRow = tempRow.substring(indexSpace + 1, tempRow.length());
 
         StringTokenizer stringTokenizer = new StringTokenizer(secondRow, delimiter);
         List<String> stringValues = toList(stringTokenizer);
@@ -67,11 +68,30 @@ public class AprioriMapper extends Mapper<LongWritable, Text, Text, Text> {
 
     private List<String> toList(StringTokenizer stringTokenizer) {
         List<String> list = new ArrayList<String>();
+
+//        String first = generateObject(stringTokenizer, list);
+//        if (first == null)
+//            return null;
+
         while (stringTokenizer.hasMoreTokens()) {
             String string = stringTokenizer.nextToken();
             if (!"".equals(string.trim()))
                 list.add(string);
         }
         return list;
+    }
+
+    private String generateObject(StringTokenizer stringTokenizer, List<String> list) {
+        if (!stringTokenizer.hasMoreTokens())
+            return null;
+        String terms = stringTokenizer.nextToken();
+        int index = terms.indexOf("/N/");
+        if (index != 0) {
+            return terms;
+        }
+        String[] row = terms.split("/N/");
+        number = Integer.valueOf(row[1]);
+
+        return row[2];
     }
 }

@@ -9,7 +9,9 @@ package org.openflamingo.hadoop.repository.model;
 public class AprioriModel {
     private String key;
     private String value;
-    private int support;
+    private long support;
+	private float lift;
+	private float confidence;
 
     public String getKey() {
         return key;
@@ -27,33 +29,38 @@ public class AprioriModel {
         this.value = value;
     }
 
-    public int getSupport() {
+    public long getSupport() {
         return support;
     }
 
-    public void setSupport(int support) {
+    public void setSupport(long support) {
         this.support = support;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	public float getLift() {
+		return lift;
+	}
 
-        AprioriModel that = (AprioriModel) o;
+	public void setLift(float lift) {
+		this.lift = lift;
+	}
 
-        if (support != that.support) return false;
-        if (key != null ? !key.equals(that.key) : that.key != null) return false;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+	public float getConfidence() {
+		return confidence;
+	}
 
-        return true;
-    }
+	public void setConfidence(float confidence) {
+		this.confidence = confidence;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = key != null ? key.hashCode() : 0;
-        result = 31 * result + (value != null ? value.hashCode() : 0);
-        result = 31 * result + support;
-        return result;
-    }
+	@Override
+	public String toString() {
+		return "AprioriModel{" +
+			"key='" + key + '\'' +
+			", value='" + value + '\'' +
+			", support=" + support +
+			", lift=" + lift +
+			", confidence=" + confidence +
+			'}';
+	}
 }
